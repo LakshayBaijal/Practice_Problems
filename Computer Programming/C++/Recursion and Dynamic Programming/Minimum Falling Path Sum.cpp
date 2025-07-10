@@ -1,60 +1,37 @@
 class Solution {
 public:
-    int minFallingPathSum(vector<vector<int>>& matrix) 
-    {
-        int m = matrix.size();
-        int n = matrix[0].size();
-        vector<vector<int>>vis(m,vector<int>(n,-1));
-        int minimum = INT_MAX;
-        for(int j=0;j<n;j++)
-        {
-            int ans = pathtotal(matrix,m-1,j,vis);
-            minimum = min(ans,minimum);
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        int row = matrix.size();
+        int column = matrix[0].size();  // use 0 instead of row-1 for column size
+        int minSum = INT_MAX;
+        vector<vector<int>> vis(column, vector<int>(row, INT_MAX));  // [col][row] as per your usage
+
+        for (int i = 0; i < column; i++) {
+            int cost = function(matrix, vis, i, 0);
+            if (minSum > cost) {
+                minSum = cost;
+            }
         }
-        return minimum;
+        return minSum;
     }
 
-    int pathtotal(vector<vector<int>>&matrix,int i,int j,vector<vector<int>>&vis)
-    {
-        if(i==0)
-        {
-            return matrix[0][j];
-        }
+    int function(vector<vector<int>>& matrix, vector<vector<int>>& vis, int i, int j) {
+        int n = matrix.size();        // rows
+        int m = matrix[0].size();     // columns
 
-        if(i<0 || j<0 || j>=matrix[0].size())
-        {
-            return INT_MAX;
-        }
+        if (i < 0 || i >= m) return INT_MAX;  // out of column bounds
+        if (j >= n) return INT_MAX;           // out of row bounds
 
-        if(vis[i][j] != -1)
-        {
-            return vis[i][j];
-        }
+        if (vis[i][j] != INT_MAX) return vis[i][j];
 
-        int left = INT_MAX;
-        int right = INT_MAX;
-        int center = INT_MAX;
-        if(j-1>=0)
-        {
-            left = pathtotal(matrix,i-1,j-1,vis);
-        }
+        if (j == n - 1) return matrix[j][i];  // reached last row
 
-        center = pathtotal(matrix,i-1,j,vis);
-        if(j+1<matrix[0].size())
-        {
-            right = pathtotal(matrix,i-1,j+1,vis);
-        }
+        int mid = function(matrix, vis, i, j + 1);
+        int left = function(matrix, vis, i - 1, j + 1);
+        int right = function(matrix, vis, i + 1, j + 1);
 
-        int current;
-        current = min(left,center);
-        current = min(current,right);
-
-        if(current!=INT_MAX)
-        {
-            current = current + matrix[i][j];
-            vis[i][j] = current;
-        }
-
-        return current;
+        int minimum = min({mid, left, right});
+        vis[i][j] = minimum + matrix[j][i];
+        return vis[i][j];
     }
 };
