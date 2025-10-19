@@ -1,3 +1,5 @@
+By memo + dp
+
 class Solution {
 public:
     int maxProductPath(vector<vector<int>>& grid) 
@@ -66,5 +68,66 @@ public:
         minDP[i][j] = minVal;
 
         return;
+    }
+};
+
+By Top Down Approach
+
+class Solution {
+public:
+    int maxProductPath(vector<vector<int>>& grid) 
+    {
+        int row = grid.size();
+        int col = grid[0].size();
+
+        vector<vector<long long>> dpmax(row,vector<long long>(col,LLONG_MIN));
+        vector<vector<long long>> dpmin(row,vector<long long>(col,LLONG_MAX));
+
+
+        dpmax[0][0] = grid[0][0];
+        dpmin[0][0] = grid[0][0];  
+
+
+        for(int i = 0;i<row;i++)
+        {
+            for(int j = 0;j<col;j++)
+            {
+
+                if(i == 0 && j == 0)
+                {
+                    continue;
+                }
+                long long mintemp = LLONG_MAX;
+                long long maxtemp = LLONG_MIN;
+                
+                if(i>0)
+                {
+                    long long a = max(dpmax[i-1][j] * grid[i][j],dpmin[i-1][j] * grid[i][j]);
+                    maxtemp = max(maxtemp,a);
+
+                    long long b = min(dpmax[i-1][j] * grid[i][j],dpmin[i-1][j] * grid[i][j]);
+                    mintemp = min(mintemp,b);
+                }
+
+                if(j>0)
+                {
+                    long long a = max(dpmax[i][j-1] * grid[i][j],dpmin[i][j-1] * grid[i][j]);
+                    maxtemp = max(maxtemp,a);
+
+                    long long b = min(dpmax[i][j-1] * grid[i][j],dpmin[i][j-1] * grid[i][j]);
+                    mintemp = min(mintemp,b);
+                }
+
+                dpmax[i][j] = maxtemp;
+                dpmin[i][j] = mintemp;
+            }
+        }
+
+        long long ans = dpmax[row - 1][col - 1];
+        const int MOD = 1e9 + 7;
+
+        if (ans < 0) return -1;
+        return ans % MOD; 
+
     }
 };
