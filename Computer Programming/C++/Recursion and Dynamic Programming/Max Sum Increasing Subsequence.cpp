@@ -1,23 +1,34 @@
+class Solution {
+  public:
     int maxSumIS(vector<int>& arr) 
     {
         // Your code goes here
-        
+    
         int n = arr.size();
-        vector<int> dp(n+1,0);
-        dp[0] = arr[0];
+        vector<int>dp(n,1);
+        vector<int>total(n);
         
-        for(int i=1;i<n;i++)
+        for(int i = 0;i<n;i++)
         {
-            for(int j=0;j<i;j++)
+            total[i] = arr[i];
+        }
+        
+        for(int i = 1; i<n;i++)
+        {
+            for(int j = 0;j<i;j++)
             {
                 if(arr[i]>arr[j])
                 {
-                    dp[i] = max(dp[i],dp[j]); 
+                    if(total[i] < total[j] + arr[i])
+                    {
+                    
+                        total[i] = arr[i] + total[j];
+                    }
                 }
             }
-            dp[i] = dp[i] + arr[i];
         }
+        int maximum = *max_element(total.begin(),total.end());
         
-        int ans = *max_element(dp.begin(),dp.end());
-        return ans;
+        return maximum;
     }
+};
