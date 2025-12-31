@@ -10,8 +10,9 @@ struct Node
     Node(int data1,Node* next1)
     {
         data = data1;
-        next = next1; 
+        next = next1;
     }
+
     Node(int data1)
     {
         data = data1;
@@ -19,24 +20,35 @@ struct Node
     }
 };
 
-Node convertlinklist(vector<int>&arr)
+Node* convertLinkList(vector<int>&arr)
 {
-    Node head = Node(arr[0]);
-    Node mover = head;
+    Node* head = new Node(arr[0]);
+    
+    Node* mover = head;
 
-    for(auto it : arr)
+    for(int i = 1;i<arr.size();i++)
     {
-        Node Temp = Node(it);
-        mover.next = Temp;
-        mover = Temp;
+        Node* temp = new Node(arr[i]);
+        mover ->next = temp;
+        mover = temp;
     }
+    
     return head;
 }
 
 int main()
 {
-    vector<int>arr = {1,3,5,7};
-    Node head = convertlinklist(arr);
-    cout << head.data;
+    vector<int> arr = {1,4,2,6};
+    Node* x = convertLinkList(arr);
+
+    Node* temp = x;
+
+    while(temp)
+    {
+        cout << temp -> data;
+        cout <<endl;
+        temp = temp -> next;
+    }
+
     return 0;
 }
