@@ -73,10 +73,41 @@ Node* deletelast(Node* x)
     return x;
 }
 
+Node * deleteK(Node* x, int k)
+{
+    if (x == NULL)
+    {
+        return x;
+    }
+
+    if (k == 1)
+    {
+        x = x -> next;
+        return x;
+    }
+
+    int count = 0;
+    Node* temp = x;
+    Node* prev = NULL;
+
+    while(temp!=NULL)
+    {
+        count++;
+        if(count == k)
+        {
+            prev -> next = prev -> next -> next;
+            break;
+        }
+        prev = temp;
+        temp = temp ->next;
+    }
+    return x;
+}
+
 int main()
 {
 
-    vector<int>arr = {1,6,3,7};
+    vector<int>arr = {1,6,3,7,2,5,7,3};
     Node* x = VectortoLinkList(arr);
 
     print(x);
@@ -86,6 +117,10 @@ int main()
     
     x = deletelast(x);
 
+    print(x);
+    x = deleteK(x,4);
+    
+    
     print(x);
     return 0;
 }
