@@ -104,6 +104,64 @@ Node * deleteK(Node* x, int k)
     return x;
 }
 
+Node *inserthead(Node* x,int i)
+{
+    Node* temp = new Node(i,x);
+    return temp;
+}
+
+Node *inserttail(Node* x,int i)
+{
+    if(x == NULL)
+    {
+        return new Node(i);
+    }
+
+    Node* temp = x;
+
+    while(temp->next != NULL)
+    {
+        temp = temp->next;
+    } 
+
+    Node* add = new Node(i);
+    temp -> next = add;
+
+    return x;
+
+}
+
+Node* insertele(Node* x,int ele,int pos)
+{
+    if(x == NULL)
+    {
+        return new Node(ele);
+    }
+    if(pos == 1)
+    {
+        return new Node(ele,x);
+    }
+
+    int count = 0;
+    Node* temp = x;
+
+    while(temp!=NULL)
+    {
+        count++;
+        temp = temp -> next;
+        if(count == pos - 1)
+        {
+            Node* newnode = new Node(ele,temp->next);
+            temp -> next = newnode;
+            break;
+        }
+        
+    }
+    
+
+    return x;
+}
+
 int main()
 {
 
@@ -119,8 +177,20 @@ int main()
 
     print(x);
     x = deleteK(x,4);
+
+    print(x);
     
-    
+    x = inserthead(x,10);
+
+    print(x);
+
+    x = inserttail(x,20);
+
+    print(x);
+
+
+    x = insertele(x,40,4);
+
     print(x);
     return 0;
 }
