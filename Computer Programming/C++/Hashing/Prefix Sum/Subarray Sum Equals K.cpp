@@ -2,29 +2,27 @@ class Solution {
 public:
     int subarraySum(vector<int>& nums, int k) 
     {
+        unordered_map<int,int> mp;
         int n = nums.size();
         vector<int>prefix(n);
         prefix[0] = nums[0];
-        for(int i = 1;i<n;i++)
+        for(int i = 1;i < n; i++)
         {
             prefix[i] = prefix[i-1] + nums[i];
         }    
+
+        mp[0] = 1;
         int count = 0;
-        unordered_map<int,int> mp;
         for(int i = 0;i<n;i++)
         {
-            
+            int diff = prefix[i] - k;
 
-            int m = prefix[i] - k;
-            if(m == 0)
+            if(mp.count(diff))
             {
-                count++;
+                count = count + mp[diff];
             }
-            if(mp.count(m))
-            {
-                count += mp[m];
-            }
-            mp[prefix[i]]++;
+
+            mp[prefix[i]] ++;
         }
 
         return count;
