@@ -20,3 +20,11 @@ SELECT users.name, orders.amount
 FROM users
 INNER JOIN orders
 ON users.user_id = orders.user_id;
+
+# Find users with more than 1 order
+SELECT users.name, COUNT(orders.order_id)
+FROM users
+INNER JOIN orders
+ON users.user_id = orders.user_id
+GROUP BY users.name
+HAVING COUNT(orders.order_id) > 1;
