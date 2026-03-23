@@ -1,0 +1,22 @@
+# Count users per city
+SELECT city, COUNT(*)
+FROM users
+GROUP BY city;
+
+# Users with total spend > 500
+SELECT user_id, SUM(amount)
+FROM orders
+GROUP BY user_id
+HAVING SUM(amount) > 500;
+
+# Cities with more than 10 users
+SELECT city, COUNT(*)
+FROM users
+GROUP BY city
+HAVING COUNT(*) > 10;
+
+# Show orders with user names
+SELECT users.name, orders.amount
+FROM users
+INNER JOIN orders
+ON users.user_id = orders.user_id;
